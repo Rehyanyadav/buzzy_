@@ -527,13 +527,18 @@ class DashboardScreen extends ConsumerWidget {
           'Link Partner',
           style: TextStyle(color: Colors.white),
         ),
-        content: TextField(
-          controller: controller,
-          style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            hintText: "Enter Partner's Email",
-            hintStyle: TextStyle(color: Colors.white24),
-          ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: controller,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: "Enter Partner's Email",
+                hintStyle: TextStyle(color: Colors.white24),
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -543,8 +548,7 @@ class DashboardScreen extends ConsumerWidget {
           ElevatedButton(
             onPressed: () async {
               try {
-                // Pro-active notification permission
-                await NotificationService.requestPermission();
+                // Removed NotificationService.requestPermission() as it fails on Web
 
                 await ref
                     .read(profileRepositoryProvider)

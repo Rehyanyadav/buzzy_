@@ -16,7 +16,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   bool _isLoading = false;
 
   Future<void> _handleAuth() async {
-    final email = _emailController.text.trim();
+    final email = _emailController.text.trim().toLowerCase();
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || (password.isEmpty && !_isSignUp)) {
@@ -58,7 +58,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 
   Future<void> _handleResetPassword() async {
-    final email = _emailController.text.trim();
+    final email = _emailController.text.trim().toLowerCase();
     if (email.isEmpty) {
       ScaffoldMessenger.of(
         context,

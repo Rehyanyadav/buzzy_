@@ -159,10 +159,6 @@ class ProfileRepository {
         .from('profiles')
         .update({'partner_id': partnerId})
         .eq('id', myId);
-    await _supabase
-        .from('profiles')
-        .update({'partner_id': myId})
-        .eq('id', partnerId);
   }
 
   Future<void> updateMood(String id, String emoji) async {
@@ -224,10 +220,13 @@ class ProfileRepository {
   }
 
   Future<List<ProfileModel>> searchUsers(String query) async {
+    final cleanQuery = query.trim().toLowerCase();
+    if (cleanQuery.isEmpty) return [];
+
     final response = await _supabase
         .from('profiles')
         .select()
-        .or('email.ilike.%$query%,display_name.ilike.%$query%')
+        .or('email.ilike.%$cleanQuery%,display_name.ilike.%$cleanQuery%')
         .limit(20);
 
     return (response as List)
