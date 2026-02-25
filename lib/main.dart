@@ -376,6 +376,7 @@ class DashboardScreen extends ConsumerWidget {
             DateTime.now().difference(partner!.lastSeen!).inSeconds < 40;
 
         return Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.04),
@@ -472,6 +473,7 @@ class DashboardScreen extends ConsumerWidget {
     String myId,
   ) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF6C5DD3).withValues(alpha: 0.05),
