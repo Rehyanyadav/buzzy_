@@ -423,33 +423,39 @@ class DashboardScreen extends ConsumerWidget {
               ),
               const SizedBox(width: 20),
               Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      partner?.displayName ?? 'Your Partner',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        partner?.displayName ?? 'Your Partner',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      isOnline
-                          ? 'Active right now'
-                          : (partner?.lastSeen != null
-                                ? 'Last seen ${DateFormat('HH:mm').format(partner!.lastSeen!)}'
-                                : 'Offline'),
-                      style: const TextStyle(
-                        color: Colors.white38,
-                        fontSize: 13,
+                      const SizedBox(height: 4),
+                      Text(
+                        isOnline
+                            ? 'Active right now'
+                            : (partner?.lastSeen != null
+                                  ? 'Last seen ${DateFormat('HH:mm').format(partner!.lastSeen!)}'
+                                  : 'Offline'),
+                        style: const TextStyle(
+                          color: Colors.white38,
+                          fontSize: 13,
+                        ),
+                        softWrap: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -489,36 +495,41 @@ class DashboardScreen extends ConsumerWidget {
           color: const Color(0xFF6C5DD3).withValues(alpha: 0.1),
         ),
       ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.link_off_rounded,
-            color: Color(0xFF6C5DD3),
-            size: 32,
-          ),
-          const SizedBox(width: 16),
-          const Flexible(
-            child: Text(
-              'No partner linked yet. Start your journey together!',
-              style: TextStyle(color: Colors.white60, fontSize: 14),
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            const Icon(
+              Icons.link_off_rounded,
+              color: Color(0xFF6C5DD3),
+              size: 32,
             ),
-          ),
-          const SizedBox(width: 16),
-          ElevatedButton(
-            onPressed: () => _showLinkPartnerDialog(context, ref, myId),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6C5DD3).withValues(alpha: 0.2),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+            const SizedBox(width: 16),
+            const Expanded(
+              child: Text(
+                'No partner linked yet. Start your journey together!',
+                style: TextStyle(color: Colors.white60, fontSize: 14),
+                softWrap: true,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-            child: const Text(
-              'Link',
-              style: TextStyle(color: Color(0xFFC7BDFF)),
+            const SizedBox(width: 16),
+            ElevatedButton(
+              onPressed: () => _showLinkPartnerDialog(context, ref, myId),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF6C5DD3).withValues(alpha: 0.2),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Link',
+                style: TextStyle(color: Color(0xFFC7BDFF)),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
