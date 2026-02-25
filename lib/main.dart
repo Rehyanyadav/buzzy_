@@ -384,6 +384,7 @@ class DashboardScreen extends ConsumerWidget {
             border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Stack(
                 alignment: Alignment.bottomRight,
@@ -421,8 +422,9 @@ class DashboardScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(width: 20),
-              Flexible(
+              Expanded(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -432,6 +434,7 @@ class DashboardScreen extends ConsumerWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -444,11 +447,15 @@ class DashboardScreen extends ConsumerWidget {
                         color: Colors.white38,
                         fontSize: 13,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
               IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
