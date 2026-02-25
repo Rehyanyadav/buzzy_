@@ -49,6 +49,9 @@ jobs:
 
       - run: flutter pub get
       
+      - name: Compile Drift Worker
+        run: dart compile js web/worker.dart -O4 -o web/drift_worker.js
+      
       - name: Build Web
         run: flutter build web --release --base-href /buzzy_/
 
