@@ -383,95 +383,107 @@ class DashboardScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(32),
             border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Stack(
-                alignment: Alignment.bottomRight,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Avatar: 60, Gap: 20, Gap: 8, IconButton: 48 -> Total: 136
+              final textWidth = constraints.maxWidth - 136;
+              return Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFF6C5DD3).withValues(alpha: 0.1),
-                      border: Border.all(
-                        color: const Color(0xFF6C5DD3).withValues(alpha: 0.3),
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        partner?.moodEmoji ?? '🤍',
-                        style: const TextStyle(fontSize: 28),
-                      ),
-                    ),
-                  ),
-                  if (isOnline)
-                    Container(
-                      width: 16,
-                      height: 16,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF4EE1D1),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: const Color(0xFF0F111A),
-                          width: 2,
+                  Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF6C5DD3).withValues(alpha: 0.1),
+                          border: Border.all(
+                            color: const Color(
+                              0xFF6C5DD3,
+                            ).withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            partner?.moodEmoji ?? '🤍',
+                            style: const TextStyle(fontSize: 28),
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-              const SizedBox(width: 20),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      partner?.displayName ?? 'Your Partner',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      isOnline
-                          ? 'Active right now'
-                          : (partner?.lastSeen != null
-                                ? 'Last seen ${DateFormat('HH:mm').format(partner!.lastSeen!)}'
-                                : 'Offline'),
-                      style: const TextStyle(
-                        color: Colors.white38,
-                        fontSize: 13,
-                      ),
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              IconButton(
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ChatScreen(partnerId: partnerId),
+                      if (isOnline)
+                        Container(
+                          width: 16,
+                          height: 16,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4EE1D1),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFF0F111A),
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                ),
-                icon: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: Colors.white24,
-                ),
-              ),
-            ],
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: textWidth > 0 ? textWidth : 100,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          partner?.displayName ?? 'Your Partner',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          isOnline
+                              ? 'Active right now'
+                              : (partner?.lastSeen != null
+                                    ? 'Last seen ${DateFormat('HH:mm').format(partner!.lastSeen!)}'
+                                    : 'Offline'),
+                          style: const TextStyle(
+                            color: Colors.white38,
+                            fontSize: 13,
+                          ),
+                          softWrap: true,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 48,
+                    child: IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ChatScreen(partnerId: partnerId),
+                        ),
+                      ),
+                      icon: const Icon(
+                        Icons.chevron_right_rounded,
+                        color: Colors.white24,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
@@ -493,39 +505,52 @@ class DashboardScreen extends ConsumerWidget {
           color: const Color(0xFF6C5DD3).withValues(alpha: 0.1),
         ),
       ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.link_off_rounded,
-            color: Color(0xFF6C5DD3),
-            size: 32,
-          ),
-          const SizedBox(width: 16),
-          const Expanded(
-            child: Text(
-              'No partner linked yet. Start your journey together!',
-              style: TextStyle(color: Colors.white60, fontSize: 14),
-              softWrap: true,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const SizedBox(width: 16),
-          ElevatedButton(
-            onPressed: () => _showLinkPartnerDialog(context, ref, myId),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6C5DD3).withValues(alpha: 0.2),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Icon: 32, Gaps: 16+16=32, Button: 80 -> Total: 144
+          final textWidth = constraints.maxWidth - 144;
+          return Row(
+            children: [
+              const Icon(
+                Icons.link_off_rounded,
+                color: Color(0xFF6C5DD3),
+                size: 32,
               ),
-            ),
-            child: const Text(
-              'Link',
-              style: TextStyle(color: Color(0xFFC7BDFF)),
-            ),
-          ),
-        ],
+              const SizedBox(width: 16),
+              SizedBox(
+                width: textWidth > 0 ? textWidth : 100,
+                child: const Text(
+                  'No partner linked yet. Start your journey together!',
+                  style: TextStyle(color: Colors.white60, fontSize: 14),
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 16),
+              SizedBox(
+                width: 80,
+                child: ElevatedButton(
+                  onPressed: () => _showLinkPartnerDialog(context, ref, myId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(
+                      0xFF6C5DD3,
+                    ).withValues(alpha: 0.2),
+                    elevation: 0,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Link',
+                    style: TextStyle(color: Color(0xFFC7BDFF)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
