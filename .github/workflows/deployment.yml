@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
           channel: 'stable'
           cache: true
+
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
@@ -33,9 +33,9 @@ jobs:
           java-version: '17'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
           channel: 'stable'
           cache: true
+
       - run: flutter pub get
       
       - name: Configure Android Signing
@@ -70,9 +70,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
           channel: 'stable'
           cache: true
+
       - run: flutter pub get
       
       - name: Build iOS (No Codesign)
@@ -97,9 +97,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'latest'
           channel: 'stable'
           cache: true
+
       - run: flutter pub get
       
       - name: Build Web
