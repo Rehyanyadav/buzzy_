@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # This is a template for self-hosting a controlled backend 
+  # tailored for the "Nexus" messaging app.
+  
+  db:
+    image: postgres:15-alpine
+    container_name: nexus_db
+    environment:
+      POSTGRES_DB: nexus
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-nexus_secure_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - nexus_data:/var/lib/postgresql/data
+
+  realtime:
+    image: supabase/realtime:latest
+    container_name: nexus_realtime
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: nexus
+      DB_USER: admin
+      DB_PASSWORD: ${DB_PASSWORD:-nexus_secure_pass}
+      JWT_SECRET: ${JWT_SECRET:-your_super_secret_jwt_key}
+    ports:
+      - "4000:4000"
+
+volumes:
+  nexus_data:
