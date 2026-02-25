@@ -43,10 +43,17 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = e.toString();
+        if (errorMessage.contains('email send limit') ||
+            errorMessage.contains('429')) {
+          errorMessage =
+              'Too many requests. Supabase free tier limits emails to 3 per hour. Please disable "Confirm Email" in your Supabase dashboard or try again later.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(errorMessage),
             backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 4),
           ),
         );
       }
@@ -79,10 +86,17 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       }
     } catch (e) {
       if (mounted) {
+        String errorMessage = e.toString();
+        if (errorMessage.contains('email send limit') ||
+            errorMessage.contains('429')) {
+          errorMessage =
+              'Too many requests. Supabase limits resets to 3 per hour on the free tier.';
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(errorMessage),
             backgroundColor: Colors.redAccent,
+            duration: const Duration(seconds: 4),
           ),
         );
       }
