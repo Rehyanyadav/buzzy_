@@ -421,7 +421,7 @@ class DashboardScreen extends ConsumerWidget {
                 ],
               ),
               const SizedBox(width: 20),
-              Expanded(
+              Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
