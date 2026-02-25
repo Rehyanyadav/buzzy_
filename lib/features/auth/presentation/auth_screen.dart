@@ -48,6 +48,10 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             errorMessage.contains('429')) {
           errorMessage =
               'Too many requests. Supabase free tier limits emails to 3 per hour. Please disable "Confirm Email" in your Supabase dashboard or try again later.';
+        } else if (errorMessage.contains('500') ||
+            errorMessage.contains('Error sending confirmation email')) {
+          errorMessage =
+              'Server error (500). Your custom SMTP configuration is incorrect or unverified. Please go back to Supabase -> Authentication -> SMTP and disable Custom SMTP, or ensure the sender email matches your verified SMTP domain.';
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
