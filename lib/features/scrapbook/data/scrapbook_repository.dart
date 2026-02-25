@@ -1,7 +1,6 @@
 import 'package:image_picker/image_picker.dart' show XFile;
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:io' if (dart.library.html) 'dart:html';
-
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../auth/data/auth_service.dart';

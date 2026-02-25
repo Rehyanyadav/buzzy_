@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../auth/data/auth_service.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:io' if (dart.library.html) 'dart:html';
+import 'dart:io';
 import 'dart:typed_data';
 
 final storageServiceProvider = Provider(
