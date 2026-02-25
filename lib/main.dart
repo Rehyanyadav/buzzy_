@@ -490,12 +490,13 @@ class DashboardScreen extends ConsumerWidget {
             size: 32,
           ),
           const SizedBox(width: 16),
-          const Expanded(
+          const Flexible(
             child: Text(
               'No partner linked yet. Start your journey together!',
               style: TextStyle(color: Colors.white60, fontSize: 14),
             ),
           ),
+          const SizedBox(width: 16),
           ElevatedButton(
             onPressed: () => _showLinkPartnerDialog(context, ref, myId),
             style: ElevatedButton.styleFrom(
