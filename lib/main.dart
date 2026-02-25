@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:local_auth/local_auth.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/auth_screen.dart';
 import 'features/auth/data/auth_service.dart';
@@ -41,8 +40,6 @@ class _NexusAppState extends ConsumerState<NexusApp>
     with WidgetsBindingObserver {
   int _selectedIndex = 0;
   Timer? _lastSeenTimer;
-  bool _isAuthenticated = false;
-  final LocalAuthentication _localAuth = LocalAuthentication();
 
   final List<Widget> _screens = [
     const DashboardScreen(),
@@ -56,7 +53,6 @@ class _NexusAppState extends ConsumerState<NexusApp>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _startLastSeenTimer();
-    _authenticate();
   }
 
   @override
@@ -69,38 +65,7 @@ class _NexusAppState extends ConsumerState<NexusApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _authenticate();
       _updateLastSeen();
-    } else if (state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      // Lock the app when it goes to background for security
-      setState(() => _isAuthenticated = false);
-    }
-  }
-
-  Future<void> _authenticate() async {
-    final user = ref.read(authServiceProvider).currentUser;
-    if (user == null) return;
-
-    try {
-      final isSupported = await _localAuth.isDeviceSupported();
-      if (isSupported) {
-        final didAuth = await _localAuth.authenticate(
-          localizedReason: 'FaceID is required to enter BUZZY',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true, // Specifically requesting biometrics
-            useErrorDialogs: true,
-          ),
-        );
-        setState(() => _isAuthenticated = didAuth);
-      } else {
-        // Fallback for devices/simulators without biometric support
-        setState(() => _isAuthenticated = true);
-      }
-    } catch (e) {
-      debugPrint('Auth Error: $e');
-      setState(() => _isAuthenticated = true);
     }
   }
 
@@ -128,40 +93,6 @@ class _NexusAppState extends ConsumerState<NexusApp>
       home: authState.when(
         data: (state) {
           if (state.session != null) {
-            if (!_isAuthenticated) {
-              return Scaffold(
-                backgroundColor: const Color(0xFF0F111A),
-                body: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.lock_rounded,
-                        size: 64,
-                        color: Color(0xFF6C5DD3),
-                      ),
-                      const SizedBox(height: 24),
-                      const Text(
-                        'BUZZY is Locked',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 32),
-                      ElevatedButton(
-                        onPressed: _authenticate,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF6C5DD3),
-                        ),
-                        child: const Text('Unlock with Biometrics'),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }
             return Scaffold(
               body: _screens[_selectedIndex],
               bottomNavigationBar: Container(
